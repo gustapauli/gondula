@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paulifest — Etiquetas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlBhdWxpZmVzdCBFdGlxdWV0YXMiLAogICJzaG9ydF9uYW1lIjogIlBhdWxpZmVzdCIsCiAgInN0YXJ0X3VybCI6ICIuLyIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzBjMGEwZiIsCiAgInRoZW1lX2NvbG9yIjogIiNjMjQxMGMiCn0=">
+<meta name="theme-color" content="#0c0a0f">
+<style>
+  /* ============ THEME TOKENS ============ */
+  [data-theme="dark"] {
+    --bg: #0c0a0f;
+    --bg-2: #16131c;
+    --bg-3: #1e1a26;
+    --ink: #e8e4ef;
+    --ink-2: #a09bab;
+    --ink-3: #6b6575;
+    --ink-4: #3d3847;
+    --line: #25212e;
+    --line-2: #332e3d;
+    --accent: #e2622c;
+    --accent-hover: #f57a44;
+    --accent-soft: rgba(226, 98, 44, 0.1);
+    --field-bg: #110f16;
+    --field-border: #2a2533;
+    --field-focus: #3d3550;
+    --etiq-shadow: rgba(0,0,0,0.4);
+    --modal-overlay: rgba(6, 4, 10, 0.7);
+    --noise-opacity: 0.35;
+  }
+  [data-theme="light"] {
+    --bg: #faf8f3;
+    --bg-2: #f3efe6;
+    --bg-3: #ebe6db;
+    --ink: #1a1a1a;
+    --ink-2: #4a4a47;
+    --ink-3: #8a8780;
+    --ink-4: #c4c0b6;
+    --line: #e8e3d6;
+    --line-2: #d8d2c2;
+    --accent: #c2410c;
+    --accent-hover: #9a3409;
+    --accent-soft: rgba(194, 65, 12, 0.07);
+    --field-bg: #fff;
+    --field-border: #d8d2c2;
+    --field-focus: #b8b0a0;
+    --etiq-shadow: rgba(0,0,0,0.08);
+    --modal-overlay: rgba(26, 26, 26, 0.35);
+    --noise-opacity: 0.3;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Geist', system-ui, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    opacity: var(--noise-opacity);
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.035 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .wrap {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 24px 20px 80px;
+  }
+
+  /* TOPBAR compacta */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 24px;
+    animation: fadeIn 0.4s ease both;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .brand {
+    display: flex; align-items: baseline; gap: 8px;
+  }
+  .brand-mark {
+    font-family: 'Fraunces', serif;
+    font-weight: 600; font-style: italic;
+    font-size: 1.35rem;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .brand-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 600; font-size: 1.35rem;
+    letter-spacing: -0.8px; line-height: 1;
+  }
+
+  .topbar-right {
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  /* Theme toggle */
+  .theme-toggle {
+    width: 34px; height: 34px;
+    border: 1px solid var(--line-2);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--ink-2);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .theme-toggle:hover { border-color: var(--ink-3); color: var(--ink); }
+  .theme-toggle svg { width: 16px; height: 16px; }
+  .icon-sun, .icon-moon { display: none; }
+  [data-theme="dark"] .icon-sun { display: block; }
+  [data-theme="light"] .icon-moon { display: block; }
+
+  /* Chips */
+  .chip {
+    height: 34px; padding: 0 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px; font-weight: 500;
+    background: transparent;
+    color: var(--ink-3);
+    border: 1px solid var(--line-2);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: inline-flex; align-items: center; gap: 6px;
+    text-transform: uppercase; letter-spacing: 0.3px;
+  }
+  .chip:hover { border-color: var(--ink-3); color: var(--ink-2); }
+  .chip .dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--ink-4);
+    transition: background 0.15s;
+  }
+  .chip.ok .dot { background: #22c55e; box-shadow: 0 0 6px rgba(34,197,94,0.5); }
+  .chip.ok { color: var(--ink-2); }
+
+  /* EDITOR — protagonista */
+  .editor {
+    animation: fadeUp 0.5s ease 0.1s both;
+  }
+
+  .editor-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .editor-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; text-transform: uppercase;
+    letter-spacing: 1.2px; color: var(--ink-3);
+  }
+  .editor-hint {
+    font-size: 11px; color: var(--ink-4);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 220px;
+    padding: 18px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    line-height: 1.75;
+    background: var(--field-bg);
+    color: var(--ink);
+    border: 1px solid var(--field-border);
+    border-radius: 10px;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s, background 0.3s;
+  }
+  textarea:focus {
+    border-color: var(--field-focus);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  textarea::placeholder { color: var(--ink-4); }
+
+  /* STATUS */
+  .status {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-2);
+    margin: 10px 0 0;
+    min-height: 16px;
+    letter-spacing: 0.2px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .status:empty { display: none; }
+  .status.erro { color: #ef4444; }
+  .status.ok { color: #22c55e; }
+  .status.loading::before {
+    content: '';
+    width: 10px; height: 10px;
+    border: 1.5px solid var(--ink-4);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ACTIONS */
+  .actions {
+    display: flex; gap: 8px; margin-top: 14px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 10px 16px;
+    font-family: 'Geist', sans-serif;
+    font-size: 13px; font-weight: 500;
+    border: 1px solid var(--line-2);
+    border-radius: 8px;
+    cursor: pointer;
+    background: transparent;
+    color: var(--ink);
+    display: inline-flex; align-items: center; gap: 7px;
+    transition: all 0.15s;
+    letter-spacing: -0.1px;
+  }
+  .btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+  .btn:hover:not(:disabled) {
+    border-color: var(--ink-3); background: var(--bg-2);
+  }
+  .btn:active:not(:disabled) { transform: scale(0.97); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .btn-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+  }
+
+  .btn-mute {
+    border-color: transparent; color: var(--ink-3);
+  }
+  .btn-mute:hover:not(:disabled) {
+    color: var(--ink-2); background: var(--bg-2); border-color: transparent;
+  }
+
+  /* DIVIDER */
+  .divider {
+    display: flex; align-items: center; gap: 12px;
+    margin: 40px 0 16px;
+  }
+  .divider-line { flex: 1; height: 1px; background: var(--line); }
+  .divider-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; text-transform: uppercase;
+    letter-spacing: 1.2px; color: var(--ink-3);
+  }
+  .divider-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--ink-4);
+  }
+
+  /* PREVIEW */
+  #preview {
+    display: flex; flex-wrap: wrap; gap: 14px;
+    animation: fadeUp 0.5s ease 0.2s both;
+  }
+  #preview:empty::before {
+    content: 'Etiquetas aparecerão aqui.';
+    font-size: 12.5px; color: var(--ink-4);
+    font-style: italic;
+    padding: 16px 0;
+  }
+
+  .etiqueta {
+    width: 302px; height: 113px;
+    background: #fff; color: #000;
+    border-radius: 4px;
+    display: flex; flex-direction: column;
+    align-items: center;
+    padding: 2px 6px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px var(--etiq-shadow);
+    transition: transform 0.15s;
+  }
+  .etiqueta:hover { transform: translateY(-2px); }
+  .etiqueta .nome-area {
+    width: 100%; height: 33%;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .etiqueta .nome {
+    font-family: Arial, sans-serif; font-weight: 400;
+    text-transform: uppercase; text-align: center; line-height: 1.05;
+  }
+  .etiqueta .preco-area {
+    width: 100%; height: 67%;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .etiqueta .cifrao {
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-weight: 900; align-self: flex-start; padding-top: 4px;
+  }
+  .etiqueta .preco-valor {
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-weight: 900; letter-spacing: -2px;
+  }
+
+  /* MODAIS */
+  .modal-bg {
+    display: none; position: fixed; inset: 0;
+    background: var(--modal-overlay);
+    backdrop-filter: blur(4px);
+    z-index: 100;
+    align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .modal-bg.show { display: flex; }
+
+  .modal {
+    background: var(--bg-2);
+    border: 1px solid var(--line-2);
+    border-radius: 12px;
+    padding: 24px;
+    width: 100%; max-width: 440px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+    animation: modalUp 0.2s ease;
+  }
+  @keyframes modalUp {
+    from { opacity: 0; transform: translateY(6px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .modal-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; text-transform: uppercase;
+    letter-spacing: 1.2px; color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .modal h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500; font-size: 1.25rem;
+    letter-spacing: -0.3px; margin-bottom: 10px;
+  }
+  .modal p {
+    font-size: 13px; color: var(--ink-2);
+    line-height: 1.55; margin-bottom: 16px;
+  }
+  .modal p code {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: 1px 5px; border-radius: 3px;
+    font-size: 11px;
+  }
+  .modal input, .modal textarea {
+    width: 100%; padding: 11px 13px;
+    background: var(--field-bg);
+    color: var(--ink);
+    border: 1px solid var(--field-border);
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; margin-bottom: 14px;
+    outline: none; transition: border-color 0.15s;
+  }
+  .modal input:focus, .modal textarea:focus { border-color: var(--accent); }
+  .modal textarea { height: 130px; resize: vertical; line-height: 1.5; }
+  .modal-actions { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+  .btn-link {
+    background: transparent; border: none;
+    color: #ef4444; font-family: 'Geist', sans-serif;
+    font-size: 12px; font-weight: 500;
+    cursor: pointer; padding: 10px 2px; margin-right: auto;
+    text-decoration: underline; text-underline-offset: 3px;
+  }
+
+  /* Modal foto */
+  .photo-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    margin-bottom: 16px;
+  }
+  .photo-opt {
+    padding: 20px 14px;
+    background: var(--bg-3);
+    border: 1px solid var(--line-2);
+    border-radius: 10px;
+    cursor: pointer; transition: all 0.15s;
+    display: flex; flex-direction: column; gap: 8px;
+    align-items: flex-start;
+    font-family: inherit; color: var(--ink);
+  }
+  .photo-opt:hover {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .photo-opt svg { width: 22px; height: 22px; color: var(--accent); }
+  .photo-opt-title {
+    font-family: 'Fraunces', serif;
+    font-size: 15px; font-weight: 500;
+  }
+  .photo-opt-sub {
+    font-size: 11px; color: var(--ink-3);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 540px) {
+    .wrap { padding: 18px 14px 60px; }
+    .brand-mark { font-size: 1.15rem; }
+    .brand-name { font-size: 1.15rem; }
+    textarea { min-height: 180px; padding: 14px 16px; }
+    .photo-grid { grid-template-columns: 1fr; }
+  }
+
+  /* PRINT */
+  @media print {
+    @page { size: 80mm 30mm; margin: 0; }
+    body { background: #fff; }
+    body::before { display: none !important; }
+    .topbar, .editor, .divider, .modal-bg { display: none !important; }
+    .wrap { padding: 0; max-width: none; }
+    #preview { display: block; gap: 0; margin: 0; }
+    .etiqueta {
+      width: 80mm; height: 30mm;
+      border-radius: 0; border: none; box-shadow: none;
+      margin: 0; padding: 0.5mm 2mm;
+      page-break-after: always; page-break-inside: avoid;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand">
+      <span class="brand-mark">P</span>
+      <span class="brand-name">Paulifest</span>
+    </div>
+    <div class="topbar-right">
+      <button class="chip" id="btnConfigGemini" onclick="abrirConfig('gemini')">
+        <span class="dot"></span> Gemini
+      </button>
+      <button class="chip" id="btnConfigFirebase" onclick="abrirConfig('firebase')">
+        <span class="dot"></span> Sync
+      </button>
+      <button class="chip" id="btnInstalar" onclick="instalarPWA()" style="display:none;">
+        <span class="dot"></span> Instalar
+      </button>
+      <button class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="editor">
+    <div class="editor-header">
+      <span class="editor-label">Produtos</span>
+      <span class="editor-hint">nome preço · um por linha</span>
+    </div>
+
+    <textarea id="entrada" placeholder="BANANINHA INDIA 120GR 5,99&#10;PAPEL TOALHA NATUREZA 2 ROLOS 4,90&#10;CAFE MELITTA 500G 18,90" autofocus></textarea>
+
+    <div class="status" id="status"></div>
+
+    <div class="actions">
+      <input type="file" id="inputCamera" accept="image/*" capture="environment" style="display:none;" onchange="processarFoto(event)">
+      <input type="file" id="inputGaleria" accept="image/*" style="display:none;" onchange="processarFoto(event)">
+
+      <button class="btn btn-primary" id="btnFoto" onclick="abrirEscolhaFoto()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h3l2-3h8l2 3h3v13H3z"/><circle cx="12" cy="13" r="4"/></svg>
+        Adicionar imagem
+      </button>
+
+      <button class="btn" onclick="gerar()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        Gerar
+      </button>
+
+      <button class="btn" onclick="window.print()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M6 9V3h12v6"/><rect x="4" y="9" width="16" height="9" rx="1"/><path d="M6 14h12v7H6z"/></svg>
+        Imprimir
+      </button>
+
+      <button class="btn btn-mute" onclick="limpar()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>
+        Limpar
+      </button>
+    </div>
+  </div>
+
+  <div class="divider">
+    <span class="divider-line"></span>
+    <span class="divider-text">Etiquetas</span>
+    <span class="divider-count" id="previewCount"></span>
+    <span class="divider-line"></span>
+  </div>
+
+  <div id="preview"></div>
+
+</div>
+
+<!-- MODAL: FOTO -->
+<div class="modal-bg" id="modalFoto">
+  <div class="modal">
+    <div class="modal-eyebrow">Imagem</div>
+    <h2>Como adicionar?</h2>
+    <div class="photo-grid">
+      <button class="photo-opt" onclick="escolherFoto('camera')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h3l2-3h8l2 3h3v13H3z"/><circle cx="12" cy="13" r="4"/></svg>
+        <div class="photo-opt-title">Câmera</div>
+        <div class="photo-opt-sub">Tirar foto agora</div>
+      </button>
+      <button class="photo-opt" onclick="escolherFoto('galeria')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        <div class="photo-opt-title">Galeria</div>
+        <div class="photo-opt-sub">Escolher do dispositivo</div>
+      </button>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-mute" onclick="fecharConfig()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: GEMINI -->
+<div class="modal-bg" id="modalGemini">
+  <div class="modal">
+    <div class="modal-eyebrow">Configuração</div>
+    <h2>Chave Gemini</h2>
+    <p>Salva só neste navegador. Pegar em <code>aistudio.google.com</code>.</p>
+    <input type="password" id="inputGemini" placeholder="AIzaSy...">
+    <div class="modal-actions">
+      <button class="btn-link" onclick="apagarConfig('gemini')">Apagar</button>
+      <button class="btn btn-mute" onclick="fecharConfig()">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarConfig('gemini')">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: FIREBASE -->
+<div class="modal-bg" id="modalFirebase">
+  <div class="modal">
+    <div class="modal-eyebrow">Configuração</div>
+    <h2>Sincronização</h2>
+    <p>Cole o <code>firebaseConfig</code> para sync celular ↔ PC. Deixe vazio se não usar.</p>
+    <textarea id="inputFirebase" placeholder='{
+  "apiKey": "...",
+  "databaseURL": "https://....firebaseio.com",
+  "projectId": "..."
+}'></textarea>
+    <div class="modal-actions">
+      <button class="btn-link" onclick="apagarConfig('firebase')">Apagar</button>
+      <button class="btn btn-mute" onclick="fecharConfig()">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarConfig('firebase')">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============ THEME ============ */
+function getTheme() { return localStorage.getItem('paulifest_theme') || 'dark'; }
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('paulifest_theme', t);
+  document.querySelector('meta[name="theme-color"]').content = t === 'dark' ? '#0c0a0f' : '#faf8f3';
+}
+function toggleTheme() {
+  applyTheme(getTheme() === 'dark' ? 'light' : 'dark');
+}
+applyTheme(getTheme());
+
+/* ============ STORAGE ============ */
+const STORAGE_GEMINI = 'paulifest_gemini_key';
+const STORAGE_FIREBASE = 'paulifest_firebase_config';
+const SYNC_PATH = 'paulifest/etiquetas/textarea';
+
+function getGeminiKey() { return localStorage.getItem(STORAGE_GEMINI) || ''; }
+function getFirebaseConfig() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_FIREBASE) || 'null'); }
+  catch { return null; }
+}
+function atualizarBotoesConfig() {
+  document.getElementById('btnConfigGemini').classList.toggle('ok', !!getGeminiKey());
+  document.getElementById('btnConfigFirebase').classList.toggle('ok', !!getFirebaseConfig());
+}
+
+function abrirConfig(tipo) {
+  if (tipo === 'gemini') {
+    document.getElementById('inputGemini').value = getGeminiKey();
+    document.getElementById('modalGemini').classList.add('show');
+  } else {
+    const cfg = getFirebaseConfig();
+    document.getElementById('inputFirebase').value = cfg ? JSON.stringify(cfg, null, 2) : '';
+    document.getElementById('modalFirebase').classList.add('show');
+  }
+}
+function fecharConfig() {
+  document.querySelectorAll('.modal-bg').forEach(m => m.classList.remove('show'));
+}
+function salvarConfig(tipo) {
+  if (tipo === 'gemini') {
+    const v = document.getElementById('inputGemini').value.trim();
+    if (v) localStorage.setItem(STORAGE_GEMINI, v);
+    else localStorage.removeItem(STORAGE_GEMINI);
+  } else {
+    const v = document.getElementById('inputFirebase').value.trim();
+    if (v) {
+      try {
+        JSON.parse(v);
+        localStorage.setItem(STORAGE_FIREBASE, v);
+        setStatus('Sync configurado. Recarregando...', 'ok');
+        setTimeout(() => location.reload(), 700);
+        return;
+      } catch {
+        alert('JSON inválido.');
+        return;
+      }
+    } else {
+      localStorage.removeItem(STORAGE_FIREBASE);
+      setTimeout(() => location.reload(), 300);
+    }
+  }
+  fecharConfig();
+  atualizarBotoesConfig();
+}
+function apagarConfig(tipo) {
+  if (!confirm('Apagar?')) return;
+  localStorage.removeItem(tipo === 'gemini' ? STORAGE_GEMINI : STORAGE_FIREBASE);
+  fecharConfig();
+  atualizarBotoesConfig();
+  if (tipo === 'firebase') setTimeout(() => location.reload(), 300);
+}
+
+/* ============ STATUS ============ */
+function setStatus(msg, tipo = '') {
+  const el = document.getElementById('status');
+  el.textContent = msg;
+  el.className = 'status' + (tipo ? ' ' + tipo : '');
+}
+
+/* ============ FOTO ============ */
+function abrirEscolhaFoto() {
+  if (!getGeminiKey()) {
+    alert('Configure a API Gemini primeiro.');
+    abrirConfig('gemini');
+    return;
+  }
+  document.getElementById('modalFoto').classList.add('show');
+}
+function escolherFoto(tipo) {
+  fecharConfig();
+  setTimeout(() => {
+    document.getElementById(tipo === 'camera' ? 'inputCamera' : 'inputGaleria').click();
+  }, 150);
+}
+
+async function processarFoto(event) {
+  const file = event.target.files[0];
+  event.target.value = '';
+  if (!file) return;
+  const key = getGeminiKey();
+  if (!key) { abrirConfig('gemini'); return; }
+
+  setStatus('Lendo imagem...', 'loading');
+  document.getElementById('btnFoto').disabled = true;
+
+  try {
+    const base64 = await fileToBase64(file);
+    const produtos = await chamarGemini(key, base64, file.type);
+    if (!produtos.length) { setStatus('Nenhum produto detectado.', 'erro'); return; }
+
+    const linhas = produtos.map(p => `${p.nome} ${p.preco}`).join('\n');
+    const ta = document.getElementById('entrada');
+    const atual = ta.value.trim();
+    ta.value = atual ? atual + '\n' + linhas : linhas;
+    setStatus(`${produtos.length} produto(s) adicionado(s).`, 'ok');
+    sincronizarEnviar();
+  } catch (e) {
+    console.error(e);
+    setStatus('Erro: ' + e.message, 'erro');
+  } finally {
+    document.getElementById('btnFoto').disabled = false;
+  }
+}
+
+function fileToBase64(file) {
+  return new Promise((r, e) => {
+    const f = new FileReader();
+    f.onload = () => r(f.result.split(',')[1]);
+    f.onerror = e;
+    f.readAsDataURL(file);
+  });
+}
+
+async function chamarGemini(key, base64, mime) {
+  const prompt = `Foto da tela de um PDV. Extraia APENAS nome do produto e preço unitário de cada item.
+
+REGRAS:
+1. IGNORE código, quantidade, totais, subtotais, descontos, cabeçalhos, rodapés.
+2. Nome em MAIÚSCULAS, sem acentos, max 40 chars.
+3. Preço com vírgula (ex: "5,99"), sem "R$".
+4. Se ilegível, OMITA.
+5. Retorne JSON: [{"nome":"NOME","preco":"5,99"}]
+6. Sem produtos legíveis: []`;
+
+  const res = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: mime, data: base64 } }] }],
+        generationConfig: { temperature: 0.1, responseMimeType: "application/json" }
+      })
+    }
+  );
+  if (!res.ok) throw new Error(`API ${res.status}`);
+
+  const data = await res.json();
+  const txt = data?.candidates?.[0]?.content?.parts?.[0]?.text || '[]';
+  let arr;
+  try { arr = JSON.parse(txt); } catch { const m = txt.match(/\[[\s\S]*\]/); arr = m ? JSON.parse(m[0]) : []; }
+
+  return arr
+    .filter(p => p?.nome && p?.preco)
+    .map(p => ({
+      nome: String(p.nome).toUpperCase().substring(0, 40).trim(),
+      preco: String(p.preco).replace('.', ',').replace(/[^\d,]/g, '')
+    }))
+    .filter(p => p.nome && /^\d+,\d{1,2}$/.test(p.preco));
+}
+
+/* ============ FIREBASE ============ */
+let firebaseDB = null, syncTimeout = null, aplicandoRemoto = false;
+
+async function iniciarFirebase() {
+  const cfg = getFirebaseConfig();
+  if (!cfg?.databaseURL) return;
+  try {
+    const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
+    const { getDatabase, ref, set, onValue } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js');
+    const db = getDatabase(initializeApp(cfg));
+    firebaseDB = { db, ref, set, onValue };
+    onValue(ref(db, SYNC_PATH), (snap) => {
+      const r = snap.val();
+      if (r?.texto != null && r.origem !== getOrigemId()) {
+        aplicandoRemoto = true;
+        document.getElementById('entrada').value = r.texto;
+        setStatus('Sincronizado.', 'ok');
+        aplicandoRemoto = false;
+      }
+    });
+  } catch (e) {
+    console.error(e);
+    setStatus('Sync falhou.', 'erro');
+  }
+}
+
+function getOrigemId() {
+  let id = localStorage.getItem('paulifest_device_id');
+  if (!id) { id = Math.random().toString(36).substring(2, 10); localStorage.setItem('paulifest_device_id', id); }
+  return id;
+}
+
+function sincronizarEnviar() {
+  if (!firebaseDB || aplicandoRemoto) return;
+  clearTimeout(syncTimeout);
+  syncTimeout = setTimeout(() => {
+    firebaseDB.set(firebaseDB.ref(firebaseDB.db, SYNC_PATH), {
+      texto: document.getElementById('entrada').value,
+      origem: getOrigemId(),
+      timestamp: Date.now()
+    });
+  }, 600);
+}
+
+/* ============ PWA ============ */
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault(); deferredPrompt = e;
+  document.getElementById('btnInstalar').style.display = 'inline-flex';
+});
+async function instalarPWA() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  document.getElementById('btnInstalar').style.display = 'none';
+}
+
+/* ============ ETIQUETAS ============ */
+function medirTexto(texto, fontSize, bold) {
+  const c = document.createElement('canvas').getContext('2d');
+  c.font = `${bold ? '900' : '400'} ${fontSize}px ${bold ? '"Arial Black",Arial,sans-serif' : 'Arial,sans-serif'}`;
+  return c.measureText(texto).width;
+}
+
+function fitFontSize(texto, maxW, maxF, minF, bold) {
+  let s = maxF;
+  while (s > minF) { if (medirTexto(texto, s, bold) <= maxW) return s; s -= 0.5; }
+  return minF;
+}
+
+function resolverNome(nome, maxW, maxF, minF, maxH) {
+  const p = nome.split(' ');
+  const m1 = Math.min(maxF, Math.floor(maxH * 0.9));
+  const s1 = fitFontSize(nome, maxW, m1, minF, false);
+  if (p.length < 2) return { texto: nome, fontSize: s1 };
+  const m2 = Math.min(maxF, Math.floor(maxH / 2.1));
+  let best = null, bestD = Infinity;
+  for (let i = 1; i < p.length; i++) {
+    const a = p.slice(0, i).join(' '), b = p.slice(i).join(' ');
+    const d = Math.abs(a.length - b.length);
+    if (d < bestD) { bestD = d; best = { a, b }; }
+  }
+  const longer = best.a.length >= best.b.length ? best.a : best.b;
+  const s2 = fitFontSize(longer, maxW, m2, minF, false);
+  return s2 > s1 * 1.2
+    ? { texto: best.a + '<br>' + best.b, fontSize: s2 }
+    : { texto: nome, fontSize: s1 };
+}
+
+function gerar() {
+  const texto = document.getElementById('entrada').value.trim();
+  if (!texto) return;
+  const linhas = texto.split('\n').filter(l => l.trim());
+  const preview = document.getElementById('preview');
+  preview.innerHTML = '';
+  const W = 290, H = Math.floor(113 * 0.33);
+  let count = 0;
+
+  linhas.forEach(l => {
+    l = l.trim();
+    const m = l.match(/^(.+?)\s+R?\$?\s*([\d]+[.,][\d]{1,2})\s*$/);
+    if (!m) return;
+    let nome = m[1].trim().toUpperCase().substring(0, 40);
+    const preco = parseFloat(m[2].replace(',', '.'));
+    if (isNaN(preco)) return;
+    const fmt = preco.toFixed(2).replace('.', ',');
+    const ps = fitFontSize('R$ ' + fmt, W, 75, 30, true);
+    const cs = Math.round(ps * 0.36);
+    const nr = resolverNome(nome, W, 18, 9, H);
+
+    const el = document.createElement('div');
+    el.className = 'etiqueta';
+    el.innerHTML = `
+      <div class="nome-area"><div class="nome" style="font-size:${nr.fontSize}px">${nr.texto}</div></div>
+      <div class="preco-area"><span class="cifrao" style="font-size:${cs}px">R$</span><span class="preco-valor" style="font-size:${ps}px">${fmt}</span></div>`;
+    preview.appendChild(el);
+    count++;
+  });
+
+  document.getElementById('previewCount').textContent = count ? `${count}` : '';
+}
+
+function limpar() {
+  document.getElementById('entrada').value = '';
+  document.getElementById('preview').innerHTML = '';
+  document.getElementById('previewCount').textContent = '';
+  setStatus('');
+  sincronizarEnviar();
+}
+
+/* ============ EVENTS ============ */
+document.getElementById('entrada').addEventListener('paste', () => { setTimeout(() => { gerar(); sincronizarEnviar(); }, 100); });
+document.getElementById('entrada').addEventListener('input', sincronizarEnviar);
+document.querySelectorAll('.modal-bg').forEach(m => m.addEventListener('click', (e) => { if (e.target === m) fecharConfig(); }));
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') fecharConfig(); });
+
+/* ============ INIT ============ */
+atualizarBotoesConfig();
+iniciarFirebase();
+</script>
+
+</body>
+</html>
